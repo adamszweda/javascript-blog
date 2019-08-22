@@ -26,7 +26,7 @@ const titleClickHandler = function(event) {
 
   /* [DONE] remove class 'active' from all articles */
 
-  const activeArticles = document.querySelectorAll('.posts .active');
+    const activeArticles = document.querySelectorAll('.posts .active');
 
     for(let activeArticle of activeArticles){
         activeArticle.classList.remove('active');
@@ -43,7 +43,9 @@ const titleClickHandler = function(event) {
     const clickedArticle = document.querySelector(clickedLink);
     console.log('clicked link article: ', clickedArticle);
 
-  /* add class 'active' to the correct article */
+  /* [DONE] add class 'active' to the correct article */
+
+    clickedArticle.classList.add('active');
   }
   
   const links = document.querySelectorAll('.titles a');
