@@ -106,35 +106,32 @@ function generateTags(){
   const articles = document.querySelectorAll(optArticleSelector);
   console.log(articles);  
 
+  /* DONE */
   /* START LOOP: for every article: */
   /* find tags wrapper */
   /* make html variable with empty string */
-
-  let html = '';
+  /* get tags from data-tags attribute */
+  /* split tags into array */
+  /* split tags into array */
+  /* START LOOP: for each tag */
+  /* generate HTML of the link */
+  /* add generated code to html variable */
+  /* END LOOP: for each tag */
+  /* insert HTML of all the links into the tags wrapper */
+  /* END LOOP: for every article: */
 
   for(let article of articles) {
+    let html = '';
     const articleWraper = article.querySelector(optArticleTagsSelector);
     const articleTag = article.getAttribute('data-tags');
     const articleTagsArray = articleTag.split(' ');
-    console.log(articleWraper, articleTag, articleTagsArray);
+    for(let tag of articleTagsArray) {
+      const linkHTML = '<li><a href="#tag-' + tag +'">' + tag + '</a></li> ';
+      // articleWraper.insertAdjacentHTML('beforeend', linkHTML);
+      html = html + linkHTML;      
+    }
+    articleWraper.innerHTML = html;
   }
-
-
-  /* get tags from data-tags attribute */
-
-  /* split tags into array */
-
-  /* START LOOP: for each tag */
-
-  /* generate HTML of the link */
-
-  /* add generated code to html variable */
-
-  /* END LOOP: for each tag */
-
-  /* insert HTML of all the links into the tags wrapper */
-
-  /* END LOOP: for every article: */
 }
 
 generateTags();
