@@ -176,11 +176,11 @@ function addClickListenersToTags() {
   /* START LOOP: for each link */
   /* add tagClickHandler as event listener for that link */
   /* END LOOP: for each link */
-}
-const tags = document.querySelectorAll('.list li');
-for(const tag of tags) {
-  tag.addEventListener('click', tagClickHandler);
-}
-  
+
+  const tags = document.querySelectorAll('.list li');
+  for(const tag of tags) {
+    tag.addEventListener('click', tagClickHandler);
+  }
+}  
 
 addClickListenersToTags();
