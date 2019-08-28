@@ -41,7 +41,7 @@ const titleClickHandler = function(event) {
   /* [DONE] add class 'active' to the correct article */
 
   clickedArticle.classList.add('active');
-};
+}
   
 const links = document.querySelectorAll('.titles a');
 console.log(links);
@@ -53,7 +53,8 @@ for(let link of links) {
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list';
+  optArticleTagsSelector = '.post-tags .list',
+  optArticleAuthorSelector = '.post-author';
 
 function generateTitleLinks(customSelector = '') {
 
@@ -71,7 +72,7 @@ function generateTitleLinks(customSelector = '') {
 
   let html = '';
   const articles = document.querySelectorAll(optArticleSelector + customSelector);
-  console.log(customSelector);
+  console.log(optArticleSelector + customSelector);
 
   for(const article of articles) {
     const articleId = article.getAttribute('id');
@@ -98,15 +99,8 @@ function generateTitleLinks(customSelector = '') {
 
 generateTitleLinks();
 
-function generateTags(){
-
-  console.log(optArticleTagsSelector);
-  
+function generateTags(){  
   /* find all articles */
-
-  const articles = document.querySelectorAll(optArticleSelector);
-  console.log(articles);  
-
   /* DONE */
   /* START LOOP: for every article: */
   /* find tags wrapper */
@@ -120,6 +114,9 @@ function generateTags(){
   /* END LOOP: for each tag */
   /* insert HTML of all the links into the tags wrapper */
   /* END LOOP: for every article: */
+
+  const articles = document.querySelectorAll(optArticleSelector);
+  console.log(articles);  
 
   for(let article of articles) {
     let html = '';
@@ -180,7 +177,7 @@ function addClickListenersToTags() {
   /* add tagClickHandler as event listener for that link */
   /* END LOOP: for each link */
 
-  const tags = document.querySelectorAll('.list li a');
+  const tags = document.querySelectorAll('.post-tags .list a[href^="#tag-"]');
   for(const tag of tags) {
     tag.addEventListener('click', tagClickHandler);
   }
