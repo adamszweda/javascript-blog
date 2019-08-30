@@ -116,7 +116,7 @@ function generateTags(){
   /* insert HTML of all the links into the tags wrapper */
   /* END LOOP: for every article: */
 
-  let allTags = [];
+  let allTags = {};
 
   const articles = document.querySelectorAll(optArticleSelector);
   console.log(articles);  
@@ -130,16 +130,42 @@ function generateTags(){
       const linkHTML = '<li><a href="#tag-' + tag +'">' + tag + '</a></li> ';
       // articleWraper.insertAdjacentHTML('beforeend', linkHTML);
       html = html + linkHTML;
-      if(allTags.indexOf(linkHTML) == -1) {
-        allTags.push(linkHTML);
+      if(!allTags.hasOwnProperty(tag)) {
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
       }      
     }
     articleWraper.innerHTML = html;
   }
+  console.log(allTags);
   const tagList = document.querySelector('.tags');
-  tagList.innerHTML = allTags.join(' ');
-}
 
+  function calculateTagsParams()  {
+    const params = {max: 0, min: 999999};
+    for(let tag in allTags) {
+      /* if(allTags[tag] > params.max) {
+        params.max = allTags[tag];
+      }
+      if(allTags[tag] < params.min) {
+        params.min = allTags[tag];
+      } */
+      params.max = Math.max(allTags[tag], params.max);
+      params.min = Math.min(allTags[tag], params.min);
+      console.log(tag + ' is used ' + allTags[tag] + ' times');
+    }
+    return params;
+  };
+
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams)
+  let allTagsHTML = '';
+  for(let tag in allTags) {
+    allTagsHTML += tag + ' (' + allTags[tag] + ') ';
+  }
+  tagList.innerHTML = allTagsHTML;
+}
+// calculateTagsParams();
 generateTags();
 
 function tagClickHandler(event) {
