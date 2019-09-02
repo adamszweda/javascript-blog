@@ -41,7 +41,7 @@ const titleClickHandler = function(event) {
   /* [DONE] add class 'active' to the correct article */
 
   clickedArticle.classList.add('active');
-}
+};
   
 const links = document.querySelectorAll('.titles a');
 console.log(links);
@@ -55,7 +55,9 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optTagsListSelector = '.tags.list',
-  optArticleAuthorSelector = '.post-author';
+  optArticleAuthorSelector = '.post-author',
+  optCloudClassCount = 5,
+  optCloudClassPrefix = 'tag-size-';
 
 function generateTitleLinks(customSelector = '') {
 
@@ -100,6 +102,32 @@ function generateTitleLinks(customSelector = '') {
 
 generateTitleLinks();
 
+function calculateTagsParams()  {
+  const params = {max: 0, min: 999999};
+  for(let tag in allTags) {
+    if(allTags[tag] > params.max) {
+      params.max = allTags[tag];
+    }
+    if(allTags[tag] < params.min) {
+      params.min = allTags[tag];
+    }
+    params.max = Math.max(allTags[tag], params.max);
+    params.min = Math.min(allTags[tag], params.min);
+    console.log(tag + ' is used ' + allTags[tag] + ' times');
+  }
+  return params;
+}  
+
+function calculateTagClass(count, params) {
+  const normalizedCount = count - params.min;
+  const normalizedMax = params.max - params.min;
+  const percentage = normalizedCount / normalizedMax;
+  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1);
+  return classNumber;
+}
+
+
+let allTags = {};
 function generateTags(){  
   /* find all articles */
   /* DONE */
@@ -115,9 +143,6 @@ function generateTags(){
   /* END LOOP: for each tag */
   /* insert HTML of all the links into the tags wrapper */
   /* END LOOP: for every article: */
-
-  let allTags = {};
-
   const articles = document.querySelectorAll(optArticleSelector);
   console.log(articles);  
 
@@ -141,31 +166,19 @@ function generateTags(){
   console.log(allTags);
   const tagList = document.querySelector('.tags');
 
-  function calculateTagsParams()  {
-    const params = {max: 0, min: 999999};
-    for(let tag in allTags) {
-      /* if(allTags[tag] > params.max) {
-        params.max = allTags[tag];
-      }
-      if(allTags[tag] < params.min) {
-        params.min = allTags[tag];
-      } */
-      params.max = Math.max(allTags[tag], params.max);
-      params.min = Math.min(allTags[tag], params.min);
-      console.log(tag + ' is used ' + allTags[tag] + ' times');
-    }
-    return params;
-  };
+  
 
   const tagsParams = calculateTagsParams(allTags);
-  console.log('tagsParams:', tagsParams)
-  let allTagsHTML = '';
+  console.log('tagsParams:', tagsParams);
+  let allTagsHTML = '';  
   for(let tag in allTags) {
-    allTagsHTML += tag + ' (' + allTags[tag] + ') ';
+    const tagLinkHTML = calculateTagClass(allTags[tag], tagsParams);
+    console.log('tagLinkHTML:', tagLinkHTML);
+    allTagsHTML += '<li><a class="' + optCloudClassPrefix + tagLinkHTML + '" href="#tag-' + tag + '">' + tag + '</a> (' + allTags[tag] + ') </li>';
   }
   tagList.innerHTML = allTagsHTML;
+  
 }
-// calculateTagsParams();
 generateTags();
 
 function tagClickHandler(event) {
