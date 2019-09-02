@@ -1,5 +1,11 @@
 'use strict';
 
+const templates = {
+  articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
+  articleTag: Handlebars.compile(document.querySelector('#template-tag-link').innerHTML),
+  authorTag: Handlebars.compile(document.querySelector('#template-author-link').innerHTML),
+};
+
 const titleClickHandler = function(event) {
   event.preventDefault();
   const clickedElement = this;
@@ -82,7 +88,8 @@ function generateTitleLinks(customSelector = '') {
   for(const article of articles) {
     const articleId = article.getAttribute('id');
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
-    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    const linkHTMLData = {id: articleId, title: articleTitle};
+    const linkHTML = templates.articleLink(linkHTMLData);
     // titleList.innerHTML = titleList.innerHTML + linkHTML;
     // titleList.insertAdjacentHTML('beforeend', linkHTML);
     html = html + linkHTML;
@@ -153,7 +160,8 @@ function generateTags() {
     const articleTag = article.getAttribute('data-tags');
     const articleTagsArray = articleTag.split(' ');
     for(let tag of articleTagsArray) {
-      const linkHTML = '<li><a href="#tag-' + tag +'">' + tag + '</a></li> ';
+      const tagHTMLData = {artTag: tag};
+      const linkHTML = templates.articleTag(tagHTMLData);
       // articleWraper.insertAdjacentHTML('beforeend', linkHTML);
       html = html + linkHTML;
       if(!allTags.hasOwnProperty(tag)) {
@@ -272,7 +280,9 @@ function generateAuthors() {
     } else {
       allAuthors[authorTag]++;
     }
-    const linkHTML = 'by <a href="#author-' + authorTag + '">' + authorTag + '</a>';
+    const authorHTMLData = {author: authorTag};
+    //const linkHTML = 'by <a href="#author-' + authorTag + '">' + authorTag + '</a>';
+    const linkHTML = templates.authorTag(authorHTMLData);
     console.log(linkHTML);
     html = html + linkHTML;          
     authorWraper.innerHTML = html;
