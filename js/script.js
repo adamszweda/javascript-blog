@@ -165,7 +165,7 @@ function generateTags() {
     articleWraper.innerHTML = html;
   }
   console.log(allTags);
-  const tagList = document.querySelector('.tags');  
+  const tagList = document.querySelector(optTagsListSelector);  
 
   const tagsParams = calculateTagsParams(allTags);
   console.log('tagsParams:', tagsParams);
@@ -287,7 +287,7 @@ function generateAuthors() {
     console.log(authorLinkHTML);
     allAuthorsHTML += '<li><a class="author-name ' + optCloudAuthorClassPrefix + authorLinkHTML  + '" href="#">' + author + '</a> (' + allAuthors[author] + ') </li>';
   } 
-  authorList.innerHTML = allAuthorsHTML;;
+  authorList.innerHTML = allAuthorsHTML;
 }
 generateAuthors();
 
