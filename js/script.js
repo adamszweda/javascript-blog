@@ -4,6 +4,8 @@ const templates = {
   articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
   articleTag: Handlebars.compile(document.querySelector('#template-tag-link').innerHTML),
   authorTag: Handlebars.compile(document.querySelector('#template-author-link').innerHTML),
+  tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
+  authorCloudLink: Handlebars.compile(document.querySelector('#template-author-cloud-link').innerHTML),
 };
 
 const titleClickHandler = function(event) {
@@ -174,16 +176,17 @@ function generateTags() {
   }
   console.log(allTags);
   const tagList = document.querySelector(optTagsListSelector);  
-
   const tagsParams = calculateTagsParams(allTags);
   console.log('tagsParams:', tagsParams);
-  let allTagsHTML = '';  
+  const allTagsData = {tags: []};
   for(let tag in allTags) {
-    const tagLinkHTML = calculateTagClass(allTags[tag], tagsParams);
-    console.log('tagLinkHTML:', tagLinkHTML);
-    allTagsHTML += '<li><a class="' + optCloudClassPrefix + tagLinkHTML + '" href="#tag-' + tag + '">' + tag + '</a> </li>';
+    allTagsData.tags.push({
+      tag: tag,
+      count: allTags[tag],
+      className: calculateTagClass(allTags[tag], tagsParams)
+    });
   }
-  tagList.innerHTML = allTagsHTML;  
+  tagList.innerHTML = templates.tagCloudLink(allTagsData);  
 }
 generateTags();
 
@@ -290,14 +293,18 @@ function generateAuthors() {
   console.log(allAuthors);
   const authorList = document.querySelector('.authors');
   const authorParams = calculateAuthorsParams(allAuthors);
-  let allAuthorsHTML = '';
+  const allAuthorsData = {authors: []};
   for(let author in allAuthors) {
     console.log(author);
-    const authorLinkHTML = calculateAuthorsClass(allAuthors[author], authorParams);
-    console.log(authorLinkHTML);
-    allAuthorsHTML += '<li><a class="author-name ' + optCloudAuthorClassPrefix + authorLinkHTML  + '" href="#">' + author + '</a> (' + allAuthors[author] + ') </li>';
+    allAuthorsData.authors.push({
+      author: author,
+      authorClassName: calculateAuthorsClass(allAuthors[author], authorParams),
+      count: allAuthors[author]
+    });
+    // const authorLinkHTML = calculateAuthorsClass(allAuthors[author], authorParams);
+    // allAuthorsHTML += '<li><a class="author-name ' + optCloudAuthorClassPrefix + authorLinkHTML  + '" href="#">' + author + '</a> (' + allAuthors[author] + ') </li>';
   } 
-  authorList.innerHTML = allAuthorsHTML;
+  authorList.innerHTML = templates.authorCloudLink(allAuthorsData);
 }
 generateAuthors();
 
